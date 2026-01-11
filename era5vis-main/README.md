@@ -17,11 +17,28 @@ Make sure you have all dependencies installed. These are:
 - netcdf4
 - matplotlib
 - pytest
+- cdsapi
+
 
 Download the package and install it in development mode. In the root directory
 type:
 
     $ pip install -e .
+
+## Copernicus API setup (required)
+
+To download ERA5 data, you need a Copernicus Climate Data Store account.
+
+Register at: https://cds.climate.copernicus.eu
+
+Create an API key
+
+Store your credentials in ~/.cdsapirc:
+
+    $ url: https://cds.climate.copernicus.eu/api/v2
+    $ key: <UID>:<API_KEY>
+
+
 
 ## Command line interface
 
