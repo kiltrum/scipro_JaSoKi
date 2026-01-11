@@ -2,6 +2,8 @@ from pathlib import Path
 import cdsapi
 
 # Fixed configuration
+DATASET = 'reanalysis-era5-pressure-levels-monthly-means'
+PRODUCT_TYPE = 'monthly_averaged_reanalysis_by_hour_of_day'
 VARIABLES = [
     'geopotential',
     'specific_humidity',
@@ -16,24 +18,22 @@ TIME = "00:00"
 TARGET = Path("./era5_data.nc")
 
 
-def download_era5(year: str, month: str, day: str) -> Path:
+def download_era5(year: str, month: str) -> Path:
     """
-    Download ERA5 pressure level data from the Copernicus Climate Data Store.
+    Download ERA5 monthly mean pressure level data from the Copernicus Climate Data Store.
 
     Args:
         year: Year to download (e.g., "2024").
         month: Month to download (e.g., "03").
-        day: Day to download (e.g., "01").
 
     Returns:
         Path to the downloaded NetCDF file.
     """
     request = {
-        'product_type': ['reanalysis'],
+        'product_type': [PRODUCT_TYPE],
         'variable': VARIABLES,
         'year': [year],
         'month': [month],
-        'day': [day],
         'time': [TIME],
         'pressure_level': PRESSURE_LEVELS,
         'data_format': 'netcdf',
@@ -41,10 +41,10 @@ def download_era5(year: str, month: str, day: str) -> Path:
     }
 
     client = cdsapi.Client()
-    client.retrieve('reanalysis-era5-pressure-levels', request, TARGET)
+    client.retrieve(DATASET, request, TARGET)
 
     return TARGET
 
 
 if __name__ == "__main__":
-    download_era5(year="2024", month="03", day="01")
+    download_era5(year="2024", month="03")
