@@ -418,3 +418,9 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Python packaging
+*.egg-info/
+*.egg
+build/
+dist/
