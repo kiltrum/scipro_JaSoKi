@@ -104,7 +104,7 @@ def clim(args):
         output of sys.args[1:]
     """
     from era5vis.download_era5 import download_era5, parse_month
-
+    from era5vis.Plot_map_anomaly import Plot_map_anomaly
     if '--year' in args:
         args[args.index('--year')] = '-y'
     if '--month' in args:
@@ -113,6 +113,11 @@ def clim(args):
         args[args.index('--parameter')] = '-p'
     if '--level' in args:
         args[args.index('--level')] = '-lvl'
+    #optional arguments for Plotting and sounding
+    param = args[args.index('-p') + 1] if '-p' in args else 't'
+    level = int(args[args.index('-lvl') + 1]) if '-lvl' in args else 500
+    lon_pt = float(args[args.index('--lon') + 1]) if '--lon' in args else -10.0
+    lat_pt = float(args[args.index('--lat') + 1]) if '--lat' in args else 62.5 
 
     if len(args) == 0:
         print(HELP_CLIM)
@@ -137,6 +142,9 @@ def clim(args):
         print(f'Downloading ERA5 monthly mean data for {year}-{month}...')
         filepath = download_era5(year=year, month=month)
         print(f'Data downloaded to: {filepath}')
+
+         
+        fig, ax = Plot_map_anomaly(filepath, param=param,pressure_level=level,lon_pt=lon_pt, lat_pt=lat_pt)
     
     else:
         print('era5vis_clim: command not understood. '
