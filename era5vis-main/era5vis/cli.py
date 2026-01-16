@@ -105,6 +105,8 @@ def clim(args):
     """
     from era5vis.download_era5 import download_era5, parse_month
     from era5vis.Plot_map_anomaly import Plot_map_anomaly
+    from era5vis.Soundings import plot_sounding
+    from era5vis.HTML_build import build_html
     if '--year' in args:
         args[args.index('--year')] = '-y'
     if '--month' in args:
@@ -138,14 +140,16 @@ def clim(args):
             print(f'Error: {e}')
             return
         
+
         # Download the data 
         print(f'Downloading ERA5 monthly mean data for {year}-{month}...')
         filepath = download_era5(year=year, month=month)
         print(f'Data downloaded to: {filepath}')
-
+        date=f"{month} {year}"
          
-        fig, ax = Plot_map_anomaly(filepath, param=param,pressure_level=level,lon_pt=lon_pt, lat_pt=lat_pt)
-    
+        png1 = Plot_map_anomaly(filepath, param,level,lat_pt,lon_pt)
+        png2=plot_sounding(filepath,lat_pt,lon_pt)
+        build_html(png1,png2,date)
     else:
         print('era5vis_clim: command not understood. '
               'Type "era5vis_clim --help" for usage information.')

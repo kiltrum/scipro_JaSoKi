@@ -12,7 +12,7 @@ from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 #FIXED VARIABLES
 
 
-def Plot_map_anomaly(pathfile,param,pressure_level,lon_pt,lat_pt):
+def Plot_map_anomaly(pathfile,param,pressure_level,lat_pt,lon_pt):
     range = [-55,35,35,90]
     DATA_DIR = Path(__file__).parent / "data"
     clim_path = DATA_DIR / "model_clim.nc"
@@ -81,5 +81,5 @@ def Plot_map_anomaly(pathfile,param,pressure_level,lon_pt,lat_pt):
     plt.savefig(outpath, dpi=300, bbox_inches="tight")
     print(f"Plot saved to: {outpath}")
     plt.show()
-    return fig,ax
+    return fname
 
