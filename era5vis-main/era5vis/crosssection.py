@@ -47,6 +47,7 @@ import numpy as np
 import xarray as xr
 import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize
+import os
 
 # --- constants / defaults (kept simple) ---
 G0 = 9.80665
@@ -72,11 +73,21 @@ QUIVER_Y_SKIP = 1
 QUIVER_SCALE = 5.0
 W_EXAG = 1000.0
 
-TERRAIN_FILE_DEFAULT = "era5vis-main/data/model_terrain/elevaation.nc"
+
+# FIELPATHS
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]   # .../era5vis-main
+DATA = ROOT / "data"
+
+CLIMFILE_DEFAULT = DATA / "model_clim.nc"
+TERRAIN_FILE_DEFAULT = DATA / "DEM.nc"
+
 TERRAIN_VAR = "z"
 
 
-def plot_crosssection(var, lat, lon, *, casefile, climfile, field="anomaly",
+
+def plot_crosssection(casefile, lat, lon, var,*,  climfile = CLIMFILE_DEFAULT, field="anomaly",
                       terrainfile=TERRAIN_FILE_DEFAULT, savepath=None):
     """
     Main function.
@@ -204,11 +215,24 @@ def plot_crosssection(var, lat, lon, *, casefile, climfile, field="anomaly",
 
     ds_case.close()
     ds_clim_all.close()
-    return fig
+    
+
+    outdir = "PNG"
+    if not os.path.isdir(outdir):
+        os.makedirs(outdir)
+
+    safe_date = month_year_text.replace(" ", "_")
+    fname = f"ERA5_crosssection_{var}_{safe_date}.png"
+    outpath = os.path.join(outdir, fname)
+
+    fig.savefig(outpath, dpi=180, bbox_inches="tight")
+    plt.close(fig)
+
+    return fname
 
 
 # -------------------------
-# helpers (no underscores)
+# helpers (
 # -------------------------
 
 def drop_time(ds):
@@ -221,15 +245,22 @@ def drop_time(ds):
 
 
 def get_case_month_year(ds_case):
+
     """Return (month, year) from valid_time or time coordinate."""
+
     if "valid_time" in ds_case.coords:
         t = ds_case["valid_time"]
+
     elif "time" in ds_case.coords:
         t = ds_case["time"]
+
     else:
         raise KeyError("Case dataset has no 'valid_time' or 'time' coordinate.")
+    
     t0 = t.values[0] if t.size > 0 else t.values
+
     dt = xr.DataArray(t0).dt
+
     return int(dt.month.values), int(dt.year.values)
 
 

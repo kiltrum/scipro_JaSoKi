@@ -88,6 +88,8 @@ Usage:
    -y, --year [YEAR]                : year to download (e.g., 2024), mandatory
    -m, --month [MONTH]              : month to download (e.g., 03), mandatory
    -p, --parameter [PARAM]          : ERA5 variable to plot
+   -lat, --latitude [LATITUDE]      : latitude of the point for sounding and cross-section, mandatory
+   -lon, --longitude [LONGITUDE]    : longitude of the point for sounding and cross-section, mandatory 
    -lvl, --level [LEVEL]            : pressure level to plot (hPa)
    --no-browser                     : the default behavior is to open a browser with the
                                       newly generated visualisation. Set to ignore
@@ -107,6 +109,11 @@ def clim(args):
     from era5vis.Plot_map_anomaly import Plot_map_anomaly
     from era5vis.Soundings import plot_sounding
     from era5vis.HTML_build import build_html
+
+    from era5vis.crosssection import plot_crosssection
+
+
+
     if '--year' in args:
         args[args.index('--year')] = '-y'
     if '--month' in args:
@@ -115,11 +122,13 @@ def clim(args):
         args[args.index('--parameter')] = '-p'
     if '--level' in args:
         args[args.index('--level')] = '-lvl'
-    #optional arguments for Plotting and sounding
+
+
+    #arguments for Plotting and sounding
     param = args[args.index('-p') + 1] if '-p' in args else 't'
     level = int(args[args.index('-lvl') + 1]) if '-lvl' in args else 500
-    lon_pt = float(args[args.index('--lon') + 1]) if '--lon' in args else -10.0
-    lat_pt = float(args[args.index('--lat') + 1]) if '--lat' in args else 62.5 
+    lon_pt = float(args[args.index('-lon') + 1]) if '--lon' in args else -10.0
+    lat_pt = float(args[args.index('-lat') + 1]) if '--lat' in args else 62.5 
 
     if len(args) == 0:
         print(HELP_CLIM)
@@ -149,7 +158,16 @@ def clim(args):
          
         png1 = Plot_map_anomaly(filepath, param,level,lat_pt,lon_pt)
         png2=plot_sounding(filepath,lat_pt,lon_pt)
-        build_html(png1,png2,date)
+
+        png3 = plot_crosssection(
+        param,
+        lat=lat_pt,
+        lon=lon_pt,
+        casefile=filepath)
+
+
+        build_html(png1, png2, png3, date)
+
     else:
         print('era5vis_clim: command not understood. '
               'Type "era5vis_clim --help" for usage information.')
