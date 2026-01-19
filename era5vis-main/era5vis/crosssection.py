@@ -79,8 +79,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]   # .../era5vis-main
 DATA = ROOT / "data"
-
-CLIMFILE_DEFAULT = DATA / "model_clim.nc"
+DATA_DIR = Path(__file__).parent / "data"
+CLIMFILE_DEFAULT = DATA_DIR / "model_clim.nc"
+#CLIMFILE_DEFAULT = DATA / "model_clim.nc"
 TERRAIN_FILE_DEFAULT = DATA / "DEM.nc"
 
 TERRAIN_VAR = "z"

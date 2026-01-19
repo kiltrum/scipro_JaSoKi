@@ -160,11 +160,11 @@ def clim(args):
         png2=plot_sounding(filepath,lat_pt,lon_pt)
 
         png3 = plot_crosssection(
-        param,
+        casefile=filepath,
         lat=lat_pt,
         lon=lon_pt,
-        casefile=filepath)
-
+        var=param)
+        
 
         build_html(png1, png2, png3, date)
 
