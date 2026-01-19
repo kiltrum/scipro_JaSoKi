@@ -1,56 +1,64 @@
+import base64
+from pathlib import Path
 
-import os
+def _img_to_data_uri(png_path: Path) -> str:
+    data = png_path.read_bytes()
+    b64 = base64.b64encode(data).decode("ascii")
+    return f"data:image/png;base64,{b64}"
 
-def build_html(plot1, plot2, date):
-    outdir = "html"
+def build_html(plot1, plot2, plot3, date):
+    # project root is current working directory when you run era5vis_clim
+    cwd = Path.cwd()
+    outdir = cwd / "html"
+    outdir.mkdir(exist_ok=True)
 
-    fname = f"ERA5_mean_anomaly_and_sounding_{date}.html"
+    fname = f"ERA5_mean_anomaly_sounding_crosssection_{date}.html"
+    outpath = outdir / fname
 
-    if not os.path.isdir(outdir):
-        os.makedirs(outdir)
-        print(f"Created output directory: {outdir}")
-    else:
-        print(f"Output directory already exists: {outdir}")
+    png_dir = cwd / "PNG"
+    p1 = png_dir / plot1
+    p2 = png_dir / plot2
+    p3 = png_dir / plot3
 
-    outpath = os.path.join(outdir, fname)
+    # Hard fail early if any PNG is missing
+    for p in (p1, p2, p3):
+        if not p.is_file():
+            raise FileNotFoundError(f"Missing PNG file: {p}")
+
+    img1 = _img_to_data_uri(p1)
+    img2 = _img_to_data_uri(p2)
+    img3 = _img_to_data_uri(p3)
 
     html = f"""<!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <style>
-        body {{
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }}
-        .container {{
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            align-items: flex-start;
-        }}
-        img {{
-            max-width: 45%;
-            height: auto;
-        }}
-    </style>
+  <meta charset="UTF-8">
+  <title>ERA5 visualisation {date}</title>
+  <style>
+    body {{ font-family: Arial, sans-serif; padding: 20px; }}
+    .row {{ display: flex; gap: 20px; justify-content: center; margin-bottom: 30px; }}
+    img {{ max-width: 100%; height: auto; border: 1px solid #ccc; }}
+    .half img {{ width: 45%; }}
+    .full img {{ width: 95%; }}
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <img src="../PNG/{plot1}" alt="Plot 1">
-        <img src="../PNG/{plot2}" alt="Plot 2">
-    </div>
+<h2>ERA5 visualisation – {date}</h2>
+
+<div class="row half">
+  <img src="{img1}" alt="Map anomaly">
+  <img src="{img2}" alt="Sounding">
+</div>
+
+<div class="row full">
+  <img src="{img3}" alt="Cross-section">
+</div>
 
 </body>
 </html>
 """
 
-    with open(outpath, "w", encoding="utf-8") as f:
-        f.write(html)
-
+    outpath.write_text(html, encoding="utf-8")
     print(f"HTML saved to: {outpath}")
-
-
-
+    return str(outpath)

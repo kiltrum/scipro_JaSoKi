@@ -55,12 +55,15 @@ def plot_sounding(pathfile, lat_pt, lon_pt):
     #skew.shade_cape(pressure=p,t=T,t_parcel=)
     # Add some descriptive titles
     plt.title(f'Sounding at location {lat_pt}°,{lon_pt}° from {date}')
+
+    safe_date = date.replace(" ", "_").replace(",", "")
+    safe_loc = f"{lon_pt}_{lat_pt}"
+
     fname = (
-    f"ERA5_sounding_"
-    f"{lon_pt},{lat_pt}"
-    f"{date}.png"
+        f"ERA5_sounding_"
+        f"{safe_loc}_"
+        f"{safe_date}.png"
     )
-    
     outdir = "PNG"
 
     if not os.path.isdir(outdir):
