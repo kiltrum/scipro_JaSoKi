@@ -18,7 +18,7 @@ Make sure you have all dependencies installed. These are:
 - matplotlib
 - pytest
 - cdsapi
-
+- metpy
 
 Download the package and install it in development mode. In the root directory
 type:
