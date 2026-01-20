@@ -1,15 +1,13 @@
 from pathlib import Path
 
-
 def test_required_data_files_exist():
-    """Check that required data files are present in the repository."""
-
-    base = Path("era5vis/data")
+    here = Path(__file__).resolve()
+    repo_root = here.parents[2]        # adjust if needed
+    base = repo_root / "era5vis" / "data"
 
     required_files = [
-        base / "model_clim" / "model_clim.nc",
-        base / "model_terrain" / "DEM.nc",
-        base / "tmp" / "test_tmp_with_wind.nc",
+        base / "model_clim.nc",
+        base / "model_topo_pressure.nc",
     ]
 
     for file in required_files:

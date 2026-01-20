@@ -122,13 +122,18 @@ def clim(args):
         args[args.index('--parameter')] = '-p'
     if '--level' in args:
         args[args.index('--level')] = '-lvl'
+    if '--latitude' in args:
+        args[args.index('--latitude')] = '-lat'
+    if '--longitude' in args:
+        args[args.index('--longitude')] = '-lon'
 
 
     #arguments for Plotting and sounding
     param = args[args.index('-p') + 1] if '-p' in args else 't'
     level = int(args[args.index('-lvl') + 1]) if '-lvl' in args else 500
-    lon_pt = float(args[args.index('--lon') + 1]) if '--lon' in args else -10.0
-    lat_pt = float(args[args.index('--lat') + 1]) if '--lat' in args else 62.5 
+
+    lon_pt = float(args[args.index('-lon') + 1]) if '-lon' in args else 11.0
+    lat_pt = float(args[args.index('-lat') + 1]) if '-lat' in args else 47.0
 
     if len(args) == 0:
         print(HELP_CLIM)
@@ -176,3 +181,10 @@ def clim(args):
 def era5vis_clim():
     """Entry point for the era5vis_clim application script"""
     clim(sys.argv[1:])
+
+
+
+
+
+# era5vis_clim -y 2025 -m 01 -p t -lvl 500 -lat 47.2692 -lon 11.4041
+

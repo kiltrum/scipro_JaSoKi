@@ -63,11 +63,13 @@ def Plot_map_anomaly(pathfile,param,pressure_level,lat_pt,lon_pt):
 
     plt.title(f"ERA5 {long_name} anomaly for {date} at {pressure_level} hPa", fontsize=14)
 
-    # Safe plot
+    # make filename-safe date string
+    safe_date = date.replace(" ", "_").replace(",", "")
+
     fname = (
-    f"ERA5_{param}_"
-    f"{pressure_level}hPa_"
-    f"{date}.png"
+        f"ERA5_{param}_"
+        f"{pressure_level}hPa_"
+        f"{safe_date}.png"
     )
     
     outdir = "PNG"
