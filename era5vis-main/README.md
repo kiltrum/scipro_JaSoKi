@@ -25,7 +25,7 @@ type:
 
     $ pip install -e .
 
-## Copernicus API setup (required)
+## Copernicus API setup (required) (edited by Kilian)
 
 To download ERA5 data, you need a Copernicus Climate Data Store account.
 
@@ -38,9 +38,12 @@ Store your credentials in ~/.cdsapirc:
     $ url: https://cds.climate.copernicus.eu/api/v2
     $ key: <UID>:<API_KEY>
 
+## Climate model data setup (requiered) (edited by Kilian)
+To download climate model data, which is needed for climate change visualization go to:
+https://fileshare.uibk.ac.at/d/c4c3ef46072448109590/
+Download the data and store it data folder(/era5vis-main/era5vis/data).
 
-
-## Command line interface
+## Command line interface (edited by Kilian)
 
 ``setup.py`` defines an "entry point" for a script to be used as a
 command line program. Currently, the only command installed is ``era5vis_modellevel``.
@@ -48,6 +51,8 @@ command line program. Currently, the only command installed is ``era5vis_modelle
 After installation, just type
 
     $ era5vis_modellevel --help
+
+    $ era5vis_climate --help
 
 to see what the tool can do.
 
