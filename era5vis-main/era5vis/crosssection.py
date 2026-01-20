@@ -1,10 +1,12 @@
 # era5vis/crosssection.py
+
+# Jakob Werkgarner, 2026
 """
 Simple cross-section plots for ERA5-style pressure level data.
 
 What it does
 ------------
-- Recives and reads the case file (Donwloaded from the API)
+- Reads the case file reciewved from the csapi 
 - Reads monthly model climatology file
 - Plots two cross-sections through a point (lat/lon):
     1) W–E at fixed latitude  (x = longitude, y = pressure)
@@ -17,22 +19,29 @@ field="anomaly" (default)
 field="case"
     plots values of case file (shows the background climatology)
 
+    so far not liked to terminal input, but could be added later
+
 field="clim"
     plots the climatological mean for the case month
 
+    so far not liked to terminal input, but could be added later
+
 Background
 ----------
-Climatological geopotential height (z/g0) as light grey shading + contours.
+Climatological geopotential height (z/g0) as light grey shading + contours. 
+(pbasically hydrostatic balance for the month)
 
 Wind arrows (only when var == "wspd")
 -------------------------------------
-IMPORTANT: W IS NOT USED.
+
 - W–E panel: arrows are horizontal only (u, 0)
 - S–N panel: arrows are horizontal only (v, 0)
 
 Terrain mask
 ------------
-Terrain file contains a variable called "p_sfc" which is the surface pressure (hPa).
+Terrain file contains a variable called "p_sfc" which is the surface pressure (hPa). 
+This is produced from the ERA5 geopotentiall heigth at the sfc.
+The terrain line is plotted and the area below is masked white.
 """
 
 from __future__ import annotations
@@ -48,37 +57,41 @@ from matplotlib.colors import Normalize
 
 
 # --- constants / defaults (kept simple) ---
-G0 = 9.80665
+G0 = 9.80665 # m/s² (gravitational acceleration)
 
-LEVEL_DIM = "pressure_level"
+
+#define the ERA5 standard dimension and variable names
+LEVEL_DIM = "pressure_level"    
 LAT_DIM = "latitude"
 LON_DIM = "longitude"
 MONTH_DIM = "month"
-
 GEO_VAR = "z"
 
 U_VAR = "u"
 V_VAR = "v"
 
+# Only for the title
 CLIM_REF_PERIOD = "1991–2020"
 
 NLEVELS_FILL = 21
 NLEVELS_GEO = 12
 
-QUIVER_X_SKIP = 5
-QUIVER_Y_SKIP = 1
-QUIVER_SCALE = 5.0
+# quiver (wind arrows) settings
+QUIVER_X_SKIP = 5       #x grid ponit for each plotting
+QUIVER_Y_SKIP = 1       #vertical level skip (since rather few set 1)
+QUIVER_SCALE = 5.0      #arrow scaling factor (the smaller the larger the arrows)
 
 
 # FILEPATHS
 ROOT = Path(__file__).resolve().parents[1]   # .../era5vis-main
-DATA = ROOT / "data"
+
+
 DATA_DIR = Path(__file__).parent / "data"
+
 CLIMFILE_DEFAULT = DATA_DIR / "model_clim.nc"
-#CLIMFILE_DEFAULT = DATA / "model_clim.nc"
 TERRAIN_FILE_DEFAULT = DATA_DIR / "model_topo_pressure.nc"
 
-# terrain is already in pressure coords (hPa)
+# terrain is already in pressure coords (hPa) for easier plotting
 TERRAIN_VAR = "p_sfc"
 
 
@@ -87,7 +100,7 @@ def plot_crosssection(
     lat,
     lon,
     var,
-    *,
+    *,                                  # afterworkds keyword arguments only
     climfile=CLIMFILE_DEFAULT,
     field="anomaly",
     terrainfile=TERRAIN_FILE_DEFAULT,
@@ -105,7 +118,7 @@ def plot_crosssection(
     casefile : str
         Case dataset
     climfile : str
-        Monthly climatology
+        Monthly climatology (default: 1991–2020 Cliamtology)
     field : str
         "anomaly" (default), "case", or "clim".
     terrainfile : str or None
@@ -114,7 +127,7 @@ def plot_crosssection(
         If given: saves the plot and closes the figure.
     """
 
-    # Check input field (guard clause)
+    # Check input field 
     if field not in ("anomaly", "case", "clim"):
         raise ValueError("field must be one of: 'anomaly', 'case', 'clim'.")
 
@@ -132,7 +145,7 @@ def plot_crosssection(
     with xr.open_dataset(climfile) as ds_clim_all:
         ds_clim = ds_clim_all.sel({MONTH_DIM: case_month}, drop=True)
 
-    # Use CASE grid as reference (API subset area)
+    # Use CASE grid as reference (API subset area) for to make sure the extend fits (lat/lon/levels)
     ref = ds_case2[var]
 
     # Put climatology variables onto the CASE grid (lat/lon/pressure_level)
@@ -149,16 +162,17 @@ def plot_crosssection(
     if field in ("clim", "anomaly") and var not in ds_clim:
         raise KeyError(f"'{var}' not found in climatology file (needed for field='{field}').")
 
-    # peprae background (clim geopotential height) (basically hydrostatic for a month)
+
+    # peprae background (clim geopotential height) (basically hydrostatic field, for a month)
     z_bg = ds_clim_on_case[GEO_VAR] / G0
     z_lat = to_2d(z_bg.sel({LAT_DIM: lat}, method="nearest"))
     z_lon = to_2d(z_bg.sel({LON_DIM: lon}, method="nearest"))
 
-    # nice name
+    # nice name (long name from Atributes if available)
     pretty_name = pretty_var_name(var, ds_case2, ds_clim_on_case)
 
-    # units (just try case first, otherwise clim)
-    units = ds_case2[var].attrs.get("units", "") if var in ds_case2 else ds_clim[var].attrs.get("units", "")
+    # units 
+    units = ds_clim[var].attrs.get("units", "")
 
     # what field to actually plot (wspd special case)
     effective_field = "case" if (field == "anomaly" and var == "wspd") else field
@@ -170,9 +184,6 @@ def plot_crosssection(
         fld = ds_clim_on_case[var]
         mode_text = "CLIM"
     else:
-        # Calculate anomaly like in Plot_map_anomaly:
-        # anomaly = case - clim(month), but force clim onto the case grid
-
         # put climatology onto the case coordinates (uses case lon/lat/levels)
         fld = ds_case2[var] - ds_clim_on_case[var]
         mode_text = "ANOMALY"
@@ -200,7 +211,6 @@ def plot_crosssection(
     lon_used = float(fld_lon_sel[LON_DIM].values)
 
     # arrows (only for wspd; always from CASE)
-    # NOTE: W is not used. Arrows are horizontal only.
     u = v = None
     if var == "wspd":
         for needed in (U_VAR, V_VAR):
@@ -219,7 +229,7 @@ def plot_crosssection(
     ref_text = f"Model climate {CLIM_REF_PERIOD}" if mode_text != "CASE" else ""
     title_line = " • ".join([p for p in [mode_text, when_text, ref_text, pretty_name] if p])
 
-    cb_label = f"{pretty_name} [{units}]" if units else pretty_name
+    cb_label = f"{pretty_name} [{units}]"
 
     fig, axes = plt.subplots(2, 1, figsize=(10.5, 9.2), constrained_layout=True)
     fig.suptitle(title_line, x=0.01, ha="left")
@@ -272,11 +282,10 @@ def pretty_var_name(var, ds_case2, ds_clim):
 
 
 def to_2d(da):
-    """Make sure contourf gets a 2D array (drop singleton dims like expver/number)."""
-    out = da.squeeze(drop=True)
-    while out.ndim > 2:
-        out = out.isel({out.dims[0]: 0}).squeeze(drop=True)
-    return out
+    """
+    Drops single dimensions so that
+    """
+    return da.squeeze(drop=True)
 
 
 def add_background(ax, x, y, z2d):
@@ -325,14 +334,18 @@ def add_quiver(ax, xdim, horiz):
 
 
 def load_terrain_lines(terrainfile, lat_used, lon_used):
+
     """Load terrain already in pressure (hPa) and return two 1D lines."""
     with xr.open_dataset(terrainfile) as ds_terr:
         ds_terr2 = drop_time(ds_terr)
+
         if TERRAIN_VAR not in ds_terr2:
             raise KeyError(f"Terrain file does not contain variable '{TERRAIN_VAR}'.")
+        
         p_sfc = ds_terr2[TERRAIN_VAR]
         terr_we_p = to_2d(p_sfc.sel({LAT_DIM: lat_used}, method="nearest"))
         terr_sn_p = to_2d(p_sfc.sel({LON_DIM: lon_used}, method="nearest"))
+
     return terr_we_p, terr_sn_p
 
 
