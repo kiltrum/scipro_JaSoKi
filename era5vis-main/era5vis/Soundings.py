@@ -1,3 +1,4 @@
+import profile
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -17,19 +18,23 @@ def plot_sounding(pathfile, lat_pt, lon_pt):
     ds = xr.open_dataset(pathfile)
     ds = ds.metpy.parse_cf()
     date=ds.valid_time.dt.strftime("%B %Y").item()
-    ds = ds.squeeze()
-    profile = ds.sel(
-        latitude=lat_pt,
-        longitude=lon_pt,
-        method="nearest"
-    )
+    #ds = ds.squeeze()
+    #profile = ds.sel(
+    #    latitude=lat_pt,
+    #    longitude=lon_pt,
+        
+    #    method="nearest"
+    #)
+    profile = ds.sel(latitude=lat_pt, longitude=lon_pt, method="nearest").squeeze()
+    profile = profile.sortby('pressure_level', ascending=False)
 
 
-    p = profile['pressure_level'].metpy.unit_array
-    T = profile['t'].metpy.unit_array
-    q = profile['q'].metpy.unit_array
+    p = profile['pressure_level'].metpy.unit_array.to(units.hPa)
+    T = profile['t'].metpy.unit_array.to(units.K)
+    q = profile['q'].metpy.unit_array.to('kg/kg')
     u = profile['u'].metpy.unit_array
     v = profile['v'].metpy.unit_array
+
     #Calculate dew point temperature from specific humidity
     Td = mpcalc.dewpoint_from_specific_humidity(p, T, q)
 
@@ -37,22 +42,28 @@ def plot_sounding(pathfile, lat_pt, lon_pt):
     fig = plt.figure(figsize=(9, 9))
 
     # Initiate the skew-T plot type from MetPy class loaded earlier
+   
     skew = SkewT(fig, rotation=45)
-
+    skew.ax.set_ylim(p.max().m, p.min().m)
+    skew.ax.set_xlim(-40, 40)
     # Plot the data using normal plotting functions, in this case using
     # log scaling in Y, as dictated by the typical meteorological plot
     skew.plot(p, T, 'r')
     skew.plot(p, Td, 'g')
     skew.plot_barbs(p, u, v, y_clip_radius=0.03)
-    #skew.plot_barbs(p[::3], u[::3], v[::3], y_clip_radius=0.03)
+    
     # Add the relevant special lines to plot throughout the figure
-    skew.plot_dry_adiabats(t0=np.arange(233, 533, 10) * units.K,
-                        alpha=0.25, color='orangered')
-    skew.plot_moist_adiabats(t0=np.arange(233, 400, 5) * units.K,
-                            alpha=0.25, color='tab:green')
-    skew.plot_mixing_lines(pressure=np.arange(1000, 99, -20) * units.hPa,
-                        linestyle='dotted', color='tab:blue')
-    #skew.shade_cape(pressure=p,t=T,t_parcel=)
+
+    skew.plot_dry_adiabats(alpha=0.25, color='orangered')
+    skew.plot_moist_adiabats(alpha=0.25, color='tab:green')
+
+    # MIXING-RATIO
+    skew.plot_mixing_lines(
+        pressure=np.arange(p.max().m, p.min().m, -20) * units.hPa,
+        linestyle='dotted',
+        color='tab:blue',
+        linewidth=1
+    )
     # Add some descriptive titles
     plt.title(f'Sounding at location {lat_pt}°,{lon_pt}° from {date}')
     fname = (
@@ -73,4 +84,4 @@ def plot_sounding(pathfile, lat_pt, lon_pt):
     print(f"Plot saved to: {outpath}")
     plt.show()
     return fname
-    
+

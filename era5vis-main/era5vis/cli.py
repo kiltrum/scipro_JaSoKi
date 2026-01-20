@@ -127,8 +127,8 @@ def clim(args):
     #arguments for Plotting and sounding
     param = args[args.index('-p') + 1] if '-p' in args else 't'
     level = int(args[args.index('-lvl') + 1]) if '-lvl' in args else 500
-    lon_pt = float(args[args.index('-lon') + 1]) if '--lon' in args else -10.0
-    lat_pt = float(args[args.index('-lat') + 1]) if '--lat' in args else 62.5 
+    lon_pt = float(args[args.index('--lon') + 1]) if '--lon' in args else -10.0
+    lat_pt = float(args[args.index('--lat') + 1]) if '--lat' in args else 62.5 
 
     if len(args) == 0:
         print(HELP_CLIM)
