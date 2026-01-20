@@ -1,3 +1,4 @@
+#created and edited by Kilian
 """Tests for CDS API configuration and connectivity."""
 
 import os
