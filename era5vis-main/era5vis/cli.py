@@ -98,8 +98,8 @@ Usage:
     Examples command                : era5vis_clim -y 2025 -m 01 -p t -lvl 500 -lat 47.2692 -lon 11.4041
 """
 
-
-def clim(args):
+#created and edited as the group function by Jakob, Kilian and Simon
+def clim(args): 
     """The actual era5vis_clim command line tool.
 
     Parameters
