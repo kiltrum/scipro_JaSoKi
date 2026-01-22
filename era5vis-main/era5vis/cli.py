@@ -3,7 +3,7 @@
 Manuela Lehner
 November 2025
 
-Modified by Kilian Trummer Jannuary 2026
+Modified by Kilian Trummer, Jakob Werkgarner Jannuary 2026
 """
 
 import sys
@@ -112,6 +112,7 @@ def clim(args):
     from era5vis.Soundings import plot_sounding
     from era5vis.HTML_build import build_html
 
+    # import function written by Jakob Werkgarner
     from era5vis.crosssection import plot_crosssection
 
 
@@ -163,14 +164,22 @@ def clim(args):
         print(f'Data downloaded to: {filepath}')
         date=f"{month} {year}"
          
-        png1 = Plot_map_anomaly(filepath, param,level,lat_pt,lon_pt)
-        png2=plot_sounding(filepath,lat_pt,lon_pt)
+        png1 = Plot_map_anomaly(filepath, 
+                                param,
+                                level,
+                                lat_pt,
+                                lon_pt)
 
+        png2 = plot_sounding(
+            filepath,
+            lat_pt,
+            lon_pt)
+        
         png3 = plot_crosssection(
-        casefile=filepath,
-        lat=lat_pt,
-        lon=lon_pt,
-        var=param)
+            casefile=filepath,
+            lat=lat_pt,
+            lon=lon_pt,
+            var=param)
         
 
         build_html(png1, png2, png3, date)

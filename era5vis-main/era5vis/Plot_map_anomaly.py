@@ -67,12 +67,10 @@ def Plot_map_anomaly(pathfile,param,pressure_level,lat_pt,lon_pt):
     safe_date = date.replace(" ", "_").replace(",", "")
 
     fname = (
-        f"ERA5_{param}_"
-        f"{pressure_level}hPa_"
-        f"{safe_date}.png"
+        f"ERA5_map_anomaly.png"
     )
     
-    outdir = "PNG"
+    outdir = "tmp_png"
 
     if not os.path.isdir(outdir):
         os.makedirs(outdir)

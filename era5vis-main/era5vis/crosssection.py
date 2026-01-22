@@ -238,11 +238,11 @@ def plot_crosssection(
     plot_panel_sn(axes[1], fld_lon, z_lon, lat_used, lon_used, norm, cmap, cb_label, v, terr_sn)
 
     # output path (either custom or default)
-    outdir = "PNG"
+    outdir = "tmp_png"
     os.makedirs(outdir, exist_ok=True)
 
     safe_date = month_year_text.replace(" ", "_")
-    fname = f"ERA5_crosssection_{var}_{safe_date}.png"
+    fname = f"ERA5_crosssection.png"
     outpath = savepath or os.path.join(outdir, fname)
 
     fig.savefig(outpath, dpi=180, bbox_inches="tight")
