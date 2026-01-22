@@ -9,7 +9,7 @@ example packages [scispack](https://github.com/fmaussion/scispack) and
 [climvis](https://github.com/fmaussion/climvis) written by
 [Fabien Maussion](https://fabienmaussion.info).
 
-## HowTo
+## HowTo (edited by Kilian)
 
 Make sure you have all dependencies installed. These are:
 - numpy
@@ -39,9 +39,11 @@ Store your credentials in ~/.cdsapirc:
     $ key: <UID>:<API_KEY>
 
 ## Climate model data setup (requiered) (edited by Kilian)
-To download climate model data, which is needed for climate change visualization go to:
-https://fileshare.uibk.ac.at/d/c4c3ef46072448109590/
-Download the data and store it data folder(/era5vis-main/era5vis/data).
+After installing the package, run the following command in your terminal:
+
+    $ era5vis_download_model_clim
+
+This will automatically download the required model_clim.nc file and store it in the data folder (/era5vis-main/era5vis/data), if not yet present.
 
 ## Command line interface (edited by Kilian)
 
@@ -52,7 +54,7 @@ After installation, just type
 
     $ era5vis_modellevel --help
 
-    $ era5vis_climate --help
+    $ era5vis_clim --help
 
 to see what the tool can do.
 

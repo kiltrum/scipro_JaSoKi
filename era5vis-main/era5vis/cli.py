@@ -87,13 +87,15 @@ Usage:
    -v, --version                    : print the installed version
    -y, --year [YEAR]                : year to download (e.g., 2024), mandatory
    -m, --month [MONTH]              : month to download (e.g., 03), mandatory
-   -p, --parameter [PARAM]          : ERA5 variable to plot
+   -p, --parameter [PARAM]          : ERA5 variable to plot, you can choose from:'z', 'q', 'crwc', 't', 'u', 'v', 'wspd', 
    -lat, --latitude [LATITUDE]      : latitude of the point for sounding and cross-section, mandatory
    -lon, --longitude [LONGITUDE]    : longitude of the point for sounding and cross-section, mandatory 
    -lvl, --level [LEVEL]            : pressure level to plot (hPa)
    --no-browser                     : the default behavior is to open a browser with the
                                       newly generated visualisation. Set to ignore
                                       and print the path to the html file instead
+
+    Examples command                : era5vis_clim -y 2025 -m 01 -p t -lvl 500 -lat 47.2692 -lon 11.4041
 """
 
 

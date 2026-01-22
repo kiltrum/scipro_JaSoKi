@@ -53,7 +53,8 @@ req_packages = ['numpy',
                 'xarray',
                 'matplotlib',
                 'netCDF4',
-                'cdsapi'
+                'cdsapi',
+                'metpy'
                 ]
 
 check_dependencies(req_packages)
@@ -204,6 +205,7 @@ setup(
         'console_scripts': [
             'era5vis_modellevel=era5vis.cli:era5vis_modellevel',
             'era5vis_clim=era5vis.cli:era5vis_clim',
+            'era5vis_download_model_clim=era5vis.init_download_model_clim:main',
         ],
     },
 
