@@ -1,5 +1,6 @@
 import base64
 from pathlib import Path
+import webbrowser
 
 def _img_to_data_uri(png_path: Path) -> str:
     data = png_path.read_bytes()
@@ -12,10 +13,10 @@ def build_html(plot1, plot2, plot3, date):
     outdir = cwd / "html"
     outdir.mkdir(exist_ok=True)
 
-    fname = f"ERA5_mean_anomaly_sounding_crosssection_{date}.html"
+    fname = f"ERA5_mean_anomaly_sounding_crosssection.html"
     outpath = outdir / fname
 
-    png_dir = cwd / "PNG"
+    png_dir = cwd / "tmp_png"
     p1 = png_dir / plot1
     p2 = png_dir / plot2
     p3 = png_dir / plot3
@@ -61,4 +62,9 @@ def build_html(plot1, plot2, plot3, date):
 
     outpath.write_text(html, encoding="utf-8")
     print(f"HTML saved to: {outpath}")
+
+    webbrowser.open(outpath.resolve().as_uri())
+
     return str(outpath)
+
+
