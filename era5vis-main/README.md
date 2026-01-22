@@ -9,6 +9,8 @@ example packages [scispack](https://github.com/fmaussion/scispack) and
 [climvis](https://github.com/fmaussion/climvis) written by
 [Fabien Maussion](https://fabienmaussion.info).
 
+It was edited and extended by Jakob, Kilian and Simon as their semester project.
+
 ## HowTo (edited by Kilian)
 
 Make sure you have all dependencies installed. These are:
@@ -48,15 +50,17 @@ This will automatically download the required model_clim.nc file and store it in
 ## Command line interface (edited by Kilian)
 
 ``setup.py`` defines an "entry point" for a script to be used as a
-command line program. Currently, the only command installed is ``era5vis_modellevel``.
+command line program.
 
 After installation, just type
 
     $ era5vis_modellevel --help
 
+or
+
     $ era5vis_clim --help
 
-to see what the tool can do.
+to see what the tools can do.
 
 ## Testing
 
@@ -65,8 +69,9 @@ the package, run
 
     $ pytest .
 
-in the package's root directory.
+in the package's root directory. If all tests pass, you should see something like
 
+    $ ============== 18 passed, 1 warning in 4.57s =================
 
 ## License
 
