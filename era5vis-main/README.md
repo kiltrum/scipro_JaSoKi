@@ -18,6 +18,7 @@ Make sure you have all dependencies installed. These are:
 - matplotlib
 - pytest
 - cdsapi
+- cartopy
 - metpy
 
 Download the package and install it in development mode. In the root directory

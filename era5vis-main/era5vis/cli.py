@@ -108,7 +108,7 @@ def clim(args):
     from era5vis.download_era5 import download_era5, parse_month
     from era5vis.Plot_map_anomaly import Plot_map_anomaly
     from era5vis.Soundings import plot_sounding
-    from era5vis.HTML_build import build_html
+    from era5vis.build_html import build_html
 
     from era5vis.crosssection import plot_crosssection
 
@@ -161,7 +161,7 @@ def clim(args):
         print(f'Data downloaded to: {filepath}')
         date=f"{month} {year}"
          
-        png1 = Plot_map_anomaly(filepath, param,level,lat_pt,lon_pt)
+        png1 = Plot_map_anomaly(filepath,param,level,lat_pt,lon_pt)
         png2=plot_sounding(filepath,lat_pt,lon_pt)
 
         png3 = plot_crosssection(

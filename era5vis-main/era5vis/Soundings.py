@@ -1,3 +1,19 @@
+#era5vis/Plot_map_anomaly.py
+#Simon Porrmann, 2026
+'''
+Plot meteorological sounding from ERA5 data at a specific location.
+
+What it does:
+----------
+- Loads ERA5 data from a NetCDF file.
+- Extracts temperature, humidity, and wind profiles at a given latitude and longitude.
+- Calculates dew point temperature from specific humidity.
+- Plots the sounding on a Skew-T log-P diagram with temperature, dew point, and wind barbs.
+- Saves the plot as a PNG file in a designated directory.
+'''
+
+
+
 import profile
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -18,13 +34,7 @@ def plot_sounding(pathfile, lat_pt, lon_pt):
     ds = xr.open_dataset(pathfile)
     ds = ds.metpy.parse_cf()
     date=ds.valid_time.dt.strftime("%B %Y").item()
-    #ds = ds.squeeze()
-    #profile = ds.sel(
-    #    latitude=lat_pt,
-    #    longitude=lon_pt,
-        
-    #    method="nearest"
-    #)
+ 
     profile = ds.sel(latitude=lat_pt, longitude=lon_pt, method="nearest").squeeze()
     profile = profile.sortby('pressure_level', ascending=False)
 
@@ -48,10 +58,11 @@ def plot_sounding(pathfile, lat_pt, lon_pt):
     skew.ax.set_xlim(-40, 40)
     # Plot the data using normal plotting functions, in this case using
     # log scaling in Y, as dictated by the typical meteorological plot
-    skew.plot(p, T, 'r')
-    skew.plot(p, Td, 'g')
+    skew.plot(p, T, 'r', label="Temperature")
+    skew.plot(p, Td, 'g', label="Dew Point")
     skew.plot_barbs(p, u, v, y_clip_radius=0.03)
     
+
     # Add the relevant special lines to plot throughout the figure
 
     skew.plot_dry_adiabats(alpha=0.25, color='orangered')
@@ -64,6 +75,7 @@ def plot_sounding(pathfile, lat_pt, lon_pt):
         color='tab:blue',
         linewidth=1
     )
+    skew.ax.legend(loc="best")
     # Add some descriptive titles
     plt.title(f'Sounding at location {lat_pt}°,{lon_pt}° from {date}')
 

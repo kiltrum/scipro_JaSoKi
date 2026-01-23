@@ -53,7 +53,9 @@ req_packages = ['numpy',
                 'xarray',
                 'matplotlib',
                 'netCDF4',
-                'cdsapi'
+                'cdsapi',
+                'metpy',
+                'cartopy',
                 ]
 
 check_dependencies(req_packages)
