@@ -52,7 +52,7 @@ def Plot_map_anomaly(pathfile,param,pressure_level,lat_pt,lon_pt):
     lon = anomaly['longitude']
     lat = anomaly['latitude']
     im = ax.contourf(lon,lat,anomaly[param].sel(pressure_level=pressure_level).isel(valid_time=0),transform=ccrs.PlateCarree())
-    cbar = plt.colorbar(im, ax=ax, orientation='vertical', pad=0.05)
+    cbar = plt.colorbar(im, ax=ax, orientation='vertical', pad=0.1)
     cbar.set_label(f"{long_name} [{units}]", fontsize=12)
     gl = ax.gridlines(draw_labels=True, crs=ccrs.PlateCarree(),
                     linewidth=1, color='gray', alpha=0.5, linestyle='--')
@@ -61,7 +61,8 @@ def Plot_map_anomaly(pathfile,param,pressure_level,lat_pt,lon_pt):
     gl.yformatter = LATITUDE_FORMATTER
     gl.xlabel_style = {'size': 10}
     gl.ylabel_style = {'size': 10}
-
+    gl.ylabels_right = False
+    
     #Insert Sounding location and crossplot lines
     ax.plot(lon_pt, lat_pt, marker='o', color='red', markersize=8,
             transform=ccrs.PlateCarree(), label="sounding")

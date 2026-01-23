@@ -45,7 +45,7 @@ def test_plot_map_anomaly_creates_png(
         lon_pt=10,
     )
 
-    outpath = Path("PNG") / fname
+    outpath = Path("tmp_png") / fname
 
     assert outpath.exists()
     assert outpath.stat().st_size > 0

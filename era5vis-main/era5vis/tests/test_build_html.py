@@ -1,12 +1,13 @@
 from pathlib import Path
 import pytest
+import webbrowser
 from era5vis.build_html import build_html  
 
 def test_build_html_embeds_pngs(monkeypatch, tmp_path):
     #set up dummy PNG files and current working directory
     monkeypatch.chdir(tmp_path)
-
-    png_dir = tmp_path / "PNG"
+    monkeypatch.setattr(webbrowser, "open", lambda *args, **kwargs: None)
+    png_dir = tmp_path / "tmp_png"
     png_dir.mkdir()
 
     for name in ("a.png", "b.png", "c.png"):
