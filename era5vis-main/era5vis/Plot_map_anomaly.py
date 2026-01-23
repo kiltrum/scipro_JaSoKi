@@ -26,8 +26,6 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 
-#FIXED VARIABLES
-
 
 def Plot_map_anomaly(pathfile,param,pressure_level,lat_pt,lon_pt):
     range = [-55,35,35,90]

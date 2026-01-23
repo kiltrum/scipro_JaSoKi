@@ -15,7 +15,7 @@ def test_plot_sounding_creates_png(
     pytest.importorskip("metpy")
     monkeypatch.setattr(plt, "show", lambda: None)
 
-    # Output in temp dir
+    # Output to temp dir
     monkeypatch.chdir(tmp_path)
 
     fname = plot_sounding(

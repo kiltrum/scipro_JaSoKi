@@ -3,7 +3,7 @@ from pathlib import Path
 
 def test_plot_map_anomaly_required_files_exist():
     here = Path(__file__).resolve()
-    repo_root = here.parents[2]   # ggf. anpassen
+    repo_root = here.parents[2]  
     base = repo_root / "era5vis" / "data"
 
     required_files = [
@@ -31,10 +31,10 @@ def test_plot_map_anomaly_creates_png(
 ):
     pytest.importorskip("cartopy")
 
-    # GUI unterdrücken
+    # GUI supress
     monkeypatch.setattr(plt, "show", lambda: None)
 
-    # Output in temp dir
+    # Output to temp dir
     monkeypatch.chdir(tmp_path)
 
     fname = Plot_map_anomaly(
