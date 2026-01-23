@@ -3,7 +3,7 @@
 Manuela Lehner
 November 2025
 
-Modified by Kilian Trummer Jannuary 2026
+Modified by Kilian Trummer, Jakob Werkgarner Jannuary 2026
 """
 
 import sys
@@ -87,17 +87,19 @@ Usage:
    -v, --version                    : print the installed version
    -y, --year [YEAR]                : year to download (e.g., 2024), mandatory
    -m, --month [MONTH]              : month to download (e.g., 03), mandatory
-   -p, --parameter [PARAM]          : ERA5 variable to plot
+   -p, --parameter [PARAM]          : ERA5 variable to plot, you can choose from:'z', 'q', 'crwc', 't', 'u', 'v', 'wspd', 
    -lat, --latitude [LATITUDE]      : latitude of the point for sounding and cross-section, mandatory
    -lon, --longitude [LONGITUDE]    : longitude of the point for sounding and cross-section, mandatory 
    -lvl, --level [LEVEL]            : pressure level to plot (hPa)
    --no-browser                     : the default behavior is to open a browser with the
                                       newly generated visualisation. Set to ignore
                                       and print the path to the html file instead
+
+    Examples command                : era5vis_clim -y 2025 -m 01 -p t -lvl 500 -lat 47.2692 -lon 11.4041
 """
 
-
-def clim(args):
+#created and edited as the group function by Jakob, Kilian and Simon
+def clim(args): 
     """The actual era5vis_clim command line tool.
 
     Parameters
@@ -110,6 +112,7 @@ def clim(args):
     from era5vis.Soundings import plot_sounding
     from era5vis.build_html import build_html
 
+    # import function written by Jakob Werkgarner
     from era5vis.crosssection import plot_crosssection
 
 
@@ -161,14 +164,22 @@ def clim(args):
         print(f'Data downloaded to: {filepath}')
         date=f"{month} {year}"
          
-        png1 = Plot_map_anomaly(filepath,param,level,lat_pt,lon_pt)
-        png2=plot_sounding(filepath,lat_pt,lon_pt)
+        png1 = Plot_map_anomaly(filepath, 
+                                param,
+                                level,
+                                lat_pt,
+                                lon_pt)
 
+        png2 = plot_sounding(
+            filepath,
+            lat_pt,
+            lon_pt)
+        
         png3 = plot_crosssection(
-        casefile=filepath,
-        lat=lat_pt,
-        lon=lon_pt,
-        var=param)
+            casefile=filepath,
+            lat=lat_pt,
+            lon=lon_pt,
+            var=param)
         
 
         build_html(png1, png2, png3, date)

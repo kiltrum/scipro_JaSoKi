@@ -9,7 +9,9 @@ example packages [scispack](https://github.com/fmaussion/scispack) and
 [climvis](https://github.com/fmaussion/climvis) written by
 [Fabien Maussion](https://fabienmaussion.info).
 
-## HowTo
+It was edited and extended by Jakob, Kilian and Simon as their semester project.
+
+## HowTo (edited by Kilian)
 
 Make sure you have all dependencies installed. These are:
 - numpy
@@ -26,7 +28,7 @@ type:
 
     $ pip install -e .
 
-## Copernicus API setup (required)
+## Copernicus API setup (required) (edited by Kilian)
 
 To download ERA5 data, you need a Copernicus Climate Data Store account.
 
@@ -39,18 +41,27 @@ Store your credentials in ~/.cdsapirc:
     $ url: https://cds.climate.copernicus.eu/api/v2
     $ key: <UID>:<API_KEY>
 
+## Climate model data setup (requiered) (edited by Kilian)
+After installing the package, run the following command in your terminal:
 
+    $ era5vis_download_model_clim
 
-## Command line interface
+This will automatically download the required model_clim.nc file and store it in the data folder (/era5vis-main/era5vis/data), if not yet present.
+
+## Command line interface (edited by Kilian)
 
 ``setup.py`` defines an "entry point" for a script to be used as a
-command line program. Currently, the only command installed is ``era5vis_modellevel``.
+command line program.
 
 After installation, just type
 
     $ era5vis_modellevel --help
 
-to see what the tool can do.
+or
+
+    $ era5vis_clim --help
+
+to see what the tools can do.
 
 ## Testing
 
@@ -59,8 +70,9 @@ the package, run
 
     $ pytest .
 
-in the package's root directory.
+in the package's root directory. If all tests pass, you should see something like
 
+    $ ============== 18 passed, 1 warning in 4.57s =================
 
 ## License
 

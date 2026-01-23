@@ -83,11 +83,9 @@ def plot_sounding(pathfile, lat_pt, lon_pt):
     safe_loc = f"{lon_pt}_{lat_pt}"
 
     fname = (
-        f"ERA5_sounding_"
-        f"{safe_loc}_"
-        f"{safe_date}.png"
+        f"ERA5_sounding.png"
     )
-    outdir = "PNG"
+    outdir = "tmp_png"
 
     if not os.path.isdir(outdir):
         os.makedirs(outdir)

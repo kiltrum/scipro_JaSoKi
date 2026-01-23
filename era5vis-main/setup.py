@@ -202,10 +202,13 @@ setup(
     #
     # For example, the following would provide a command called `sample` which
     # executes the function `main` from this package when invoked:
-    entry_points={  # Optional
+    
+    #edited by Kilian
+    entry_points={  
         'console_scripts': [
             'era5vis_modellevel=era5vis.cli:era5vis_modellevel',
             'era5vis_clim=era5vis.cli:era5vis_clim',
+            'era5vis_download_model_clim=era5vis.init_download_model_clim:main',
         ],
     },
 
