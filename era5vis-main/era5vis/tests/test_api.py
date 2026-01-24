@@ -40,7 +40,7 @@ class TestCdsApiConfiguration:
         assert "key" in content.lower(), ".cdsapirc is missing 'key' field"
 
     def test_cdsapi_client_can_be_created(self):
-        """Test that the cdsapi.Client can be instantiated."""
+        """Test that the cdsapi.Client can be used."""
         try:
             import cdsapi
             client = cdsapi.Client()
@@ -55,5 +55,5 @@ class TestCdsApiConfiguration:
         except ImportError:
             pytest.fail(
                 "cdsapi module is not installed. "
-                "Install it with: pip install cdsapi"
+                "Install it with: pip/mamba/conda install cdsapi"
             )
