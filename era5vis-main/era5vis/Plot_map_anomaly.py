@@ -96,6 +96,6 @@ def Plot_map_anomaly(pathfile,param,pressure_level,lat_pt,lon_pt):
     outpath = os.path.join(outdir, fname)
     plt.savefig(outpath, dpi=300, bbox_inches="tight")
     print(f"Plot saved to: {outpath}")
-    plt.show()
+    #plt.show()
     return fname
 

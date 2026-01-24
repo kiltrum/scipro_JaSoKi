@@ -113,7 +113,7 @@ def clim(args):
     from era5vis.build_html import build_html
 
     # import function written by Jakob Werkgarner
-    from era5vis.crosssection import plot_crosssection
+    from era5vis.graphics import plot_crosssection
 
 
 
