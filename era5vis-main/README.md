@@ -74,6 +74,16 @@ in the package's root directory. If all tests pass, you should see something lik
 
     $ ============== 18 passed, 1 warning in 4.57s =================
 
+
+## Author Contributions
+
+- **cli.py** – Mainly written by Kilian; edited by Jakob and Simon  
+- **build_html.py** – First draft by Simon; current version by Jakob  
+- **helpers.py** – Jakob  
+- **helpers_crosssection.py** – Jakob  
+- **graphics.py** – Original package authors; `plot_crosssection` added by Jakob
+
+
 ## License
 
 With the exception of the ``setup.py`` file, which was adapted from the
