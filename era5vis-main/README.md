@@ -82,6 +82,8 @@ in the package's root directory. If all tests pass, you should see something lik
 - **init_download_model_clim.py** – Kilian
 - **download_era5.py** – Kilian
 - **README.md** – Mainly adapted by Kilian
+- **Plot_map_anomaly** - Simon
+- **Soundgings** - Simon
 - **cli.py** – Mainly written by Kilian; edited by Jakob and Simon
 - **build_html.py** – First draft by Simon; current version by Jakob  
 - **helpers.py** – Jakob  

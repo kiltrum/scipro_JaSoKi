@@ -26,3 +26,23 @@ My biggest challenge was the implementation of the download function for the mod
 **Biggest challenge in implementation**
 Another major challenge occurred for me during the code merging. In some cases, the code ran without issues on other computers but failed on mine. I pin pointed this mainly to differences in operating systems and local folder structures, even though we all worked within the same Git repository. Additionally, while the .gitignore file was very helpful in avoiding the upload of large .nc files, it occasionally led to inconsistencies in the initial setup, particularly regarding the era5_model_height.nc and model_clim.nc files.
 The main takeaway from this project is the importance of writing proper test cases early in the  process of building a shared project and running them regularly, rather than only at the end. This helps ensure that all team members work with a consistent initial setup and reduces the risk of incorrect implementations when adding new features.
+
+
+-----------------------------
+
+
+# Simon Porrmann
+
+**Assigned task and changes**
+To take the downloaded data (from Kilians API tool) and calculate the anomaly. Further, to create two plots:
+-2D plot of the anomaly with an option for available parameters as well as visualization of the crossplots and a sounding location (also, the location is an optional argument)
+-Create the Sounding plot
+Further, I created an HTML template to save the results and connected the PNG creating skripts  to the inital CLI tool.
+
+**Changes and outcome**
+During the Implementation i had to adapt several times to the CLI structure to create a product that is usable with one CLI command. In general the implementation went pretty much as planned. After finishing the project one can automatically download and create a nice HTML overview for a chosen monthly anomaly.
+
+
+**Biggest challenge in implementation**
+For me the biggest challenge was the sounding plot. Since i do not have a significant meteorological background it was the first time for me to work with MetPy library. Luckily there were a lot of example codes for soundings to find, which helped me. Also writing the testing function did not come very intuitive for me. Following the general structure of a CLI and connecting it to my partners scripts worked surprisingly well.
+The main takeaway from the project for me is, that when coding in a group it is super important to map out beforehand a reasonable plan and agree on the variables (or figures) that each person's skripts hands over towards the next person (in our case downloaded data from Kilian and the PNG files created by me and Jakob). As well as discussing properly what optional arguments etc one wants to use in in the CLI. Further I think the importance of the tests became obvious in the process.
