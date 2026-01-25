@@ -46,7 +46,7 @@ After installing the package, run the following command in your terminal:
 
     $ era5vis_download_model_clim
 
-This will automatically download the required model_clim.nc file and store it in the data folder (/era5vis-main/era5vis/data), if not yet present.
+This will automatically download the required model_clim.nc file and store it in the data folder (/era5vis-main/era5vis/data), if not yet present.This can take a while depending on your internet connection.
 
 ## Command line interface (edited by Kilian)
 
@@ -77,7 +77,12 @@ in the package's root directory. If all tests pass, you should see something lik
 
 ## Author Contributions
 
-- **cli.py** – Mainly written by Kilian; edited by Jakob and Simon  
+- **tests/test_model_clim.py** – Kilian
+- **tests/test_api.py** – Kilian
+- **init_download_model_clim.py** – Kilian
+- **download_era5.py** – Kilian
+- **README.md** – Mainly adapted by Kilian
+- **cli.py** – Mainly written by Kilian; edited by Jakob and Simon
 - **build_html.py** – First draft by Simon; current version by Jakob  
 - **helpers.py** – Jakob  
 - **helpers_crosssection.py** – Jakob  
